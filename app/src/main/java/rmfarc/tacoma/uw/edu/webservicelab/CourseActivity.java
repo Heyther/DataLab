@@ -1,5 +1,8 @@
 package rmfarc.tacoma.uw.edu.webservicelab;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import rmfarc.tacoma.uw.edu.webservicelab.authenticate.SignInActivity;
 import rmfarc.tacoma.uw.edu.webservicelab.model.Course;
 
 public class CourseActivity extends AppCompatActivity implements CourseListFragment.OnListFragmentInteractionListener, CourseAddFragment.CourseAddListener {
@@ -85,6 +89,19 @@ public class CourseActivity extends AppCompatActivity implements CourseListFragm
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_logout) {
+            SharedPreferences sharedPreferences =
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+            sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false)
+                    .commit();
+
+            Intent i = new Intent(this, SignInActivity.class);
+            startActivity(i);
+            finish();
+            return true;
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }
